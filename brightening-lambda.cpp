@@ -1,5 +1,6 @@
 #include <iostream>
 #include "brightener.h"
+#include "pixelbrightener.h"
 
 int main() {
 	auto image = std::make_shared<Image>(512, 512);
@@ -7,8 +8,18 @@ int main() {
 
 	if (image->imageSizeIsValid()) {
 		ImageBrightener brightener(image);
-		int attenuatedCount = brightener.BrightenWholeImage();
-		std::cout << "Attenuated " << attenuatedCount << " pixels\n";
+		//int attenuatedCount = brightener.BrightenWholeImage();
+
+		auto attenuatedCount = [](auto image)
+		{
+			PixelBrightener pixelBrightener;
+			image->pixelRunner(&pixelBrightener);		
+			return (int)pixelBrightener.m_attenuatedPixelCount;		
+		};
+
+		
+
+		//std::cout << "Attenuated " << attenuatedCount << " pixels\n";
 		return 0;
 	}
 	else {
